@@ -2,7 +2,7 @@ const express = require("express")
 //const bodyParser = require("body-parser")
 const app = express()
 app.use(express.json())// fetch api
-app.use(express.urlencoded())// when submitting data through form
+app.use(express.urlencoded())// when submitting data through form and method post
 app.use("/", (req, res, next) => {
     console.log("i will always run im on top and every rout will include me  thats why")
     // res.send("<h1>welcome to express.js </h2>")
