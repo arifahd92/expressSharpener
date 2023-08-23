@@ -1,4 +1,4 @@
-const Product = require('../models/product');
+const Product = require('../models/product');// imported class from model
 
 exports.getAddProduct = (req, res, next) => {
   res.render('add-product', {
@@ -11,13 +11,13 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-  const product = new Product(req.body.title);
-  product.save();
+  const product = new Product(req.body.title);//created instance to add product
+  product.save();// saved
   res.redirect('/');
 };
 
 exports.getProducts = (req, res, next) => {
-  const products = Product.fetchAll();
+  const products = Product.fetchAll();// fetched all product with class name
   res.render('shop', {
     prods: products,
     pageTitle: 'Shop',
