@@ -15,6 +15,7 @@ app.use("/add-product", (req, res) => {
     //in simple word agar req me add-product shamil hai tabhi chalega like add-productandthen any thyng chal jayega 
     res.send("<form action=/product method=POST> <input type=text name=title /> <input type=number name=price /> <button type= submit>add product</button></form>")
 })
+//NOTE ALWAYS USE SINGLE CODE NOT DOUBLE CODE TO SEND HTML 
 app.use("/product", (req, res) => {
     console.log(req.body)
     const { title, price } = req.body
