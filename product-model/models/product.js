@@ -8,6 +8,21 @@ const q = path.join(p, "data", "messages.json")//data folder k andar message.txt
 const fs = require("fs")
 
 //const products = [];//isko eleminate kar rahe json file se
+function readFile(cb) {
+
+    fs.readFile(q, "utf8", (err, data) => {
+        if (err) {
+            cb([])
+        }
+        else {
+
+            cb(data)
+        }
+    })
+}
+console.log(readFile((data) => {
+    console.log(data)
+}))
 // imp in class this is refers an object which have only property as key not methods
 module.exports = class Product {
     constructor(t) {
@@ -18,12 +33,24 @@ module.exports = class Product {
         // products.push(this);
         const data = JSON.stringify(this)
         let products = []
-        fs.readFile(q, "utf8", (err, data) => {
-            if (!err) {
+        /* fs.readFile(q, "utf8", (err, data) => {
+             if (!err) {
+                 products = JSON.parse(data)
+             }
+             products.push(this)
+ 
+             fs.writeFile(q, JSON.stringify(products), (err) => {
+                 if (err) {
+                     console.log(err)
+                 }
+             })
+         })*/
+        readFile((data) => {
+            if (data.length !== 0) {
+
                 products = JSON.parse(data)
             }
             products.push(this)
-
             fs.writeFile(q, JSON.stringify(products), (err) => {
                 if (err) {
                     console.log(err)
@@ -37,21 +64,31 @@ module.exports = class Product {
 
 
     static fetchAll(callback) {
-        fs.readFile(q, "utf8", (err, data) => {
-            if (err) {
-                console.log(err.message);
-                callback([]);
-            } else {
-                try {
-                    console.log({ data })
-                    const productFromFile = JSON.parse(data);
-                    console.log(productFromFile)
-                    callback(productFromFile);
-                } catch (parseError) {
-                    console.log("Error parsing JSON:", parseError);
-                    callback([]);
-                }
+        /*  fs.readFile(q, "utf8", (err, data) => {
+              if (err) {
+                  console.log(err.message);
+                  callback([]);
+              } else {
+                  try {
+                      console.log({ data })
+                      const productFromFile = JSON.parse(data);
+                      console.log(productFromFile)
+                      callback(productFromFile);
+                  } catch (parseError) {
+                      console.log("Error parsing JSON:", parseError);
+                      callback([]);
+                  }
+              }
+          });*/
+        readFile((data) => {
+            console.log({ check: data })
+            console.log(data.length)
+            // const actdata = JSON.parse(data)
+            if (data.length === 0) {
+                callback([])
             }
-        });
+            else
+                callback(JSON.parse(data))
+        })
     }
 }
