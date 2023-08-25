@@ -23,7 +23,7 @@ app.use(errorController.get404);
 
 app.listen(3000, (err) => {
     if (err) {
-        console.log(err)
+        console.log(err.message)
     }
     else {
         console.log("listenint at port 3000")

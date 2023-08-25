@@ -17,13 +17,16 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  const products = Product.fetchAll();// fetched all product with class name
-  res.render('shop', {
-    prods: products,
-    pageTitle: 'Shop',
-    path: '/',
-    hasProducts: products.length > 0,
-    activeShop: true,
-    productCSS: true
-  });
+  Product.fetchAll((products) => {//here product is class name by which im calling a static method of that class
+    console.log("going to log product")
+    // console.log(JSON.parse(products))
+    res.render('shop', {
+      prods: products,
+      pageTitle: 'Shop',
+      path: '/',
+      hasProducts: products.length > 0,
+      activeShop: true,
+      productCSS: true
+    });
+  });// fetched all product with class name
 };

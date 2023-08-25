@@ -2,7 +2,7 @@ const path = require('path');
 
 const express = require('express');
 
-const productsController = require('../controllers/products');
+const productsController = require('../controllers/products');// you can use obj destructuring here
 
 const router = express.Router();
 
