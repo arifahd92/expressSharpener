@@ -6,7 +6,7 @@ const p = path.join(
   'data',
   'products.json'
 );
-
+// a function to read file, when it will be called it will be called with a callback and that call back will be called fron here
 const getProductsFromFile = cb => {
   fs.readFile(p, (err, fileContent) => {
     if (err) {
@@ -16,15 +16,16 @@ const getProductsFromFile = cb => {
     }
   });
 };
-
+// a class to handle data 
 module.exports = class Product {
   constructor(title, imageUrl, description, price) {
+    this.id = Math.random().toString()
     this.title = title;
     this.imageUrl = imageUrl;
     this.description = description;
     this.price = price;
-  }
 
+  }
   save() {
     getProductsFromFile(products => {
       products.push(this);
@@ -35,6 +36,14 @@ module.exports = class Product {
   }
 
   static fetchAll(cb) {
+    console.log("i m being exicuted")
     getProductsFromFile(cb);
+  }
+
+  static fetchById(productId) {
+    getProductsFromFile((products) => {
+      const specific = products.filter((item) => item.id == productId)
+      console.log(specific)
+    })
   }
 };
