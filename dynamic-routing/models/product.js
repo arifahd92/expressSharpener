@@ -40,10 +40,13 @@ module.exports = class Product {
     getProductsFromFile(cb);
   }
 
-  static fetchById(productId) {
+  static fetchById(productId, cb) {
     getProductsFromFile((products) => {
       const specific = products.filter((item) => item.id == productId)
-      console.log(specific)
+      //console.log(specific)
+      console.log("inside model")
+
+      cb(specific)
     })
   }
 };

@@ -9,19 +9,22 @@ exports.getProducts = (req, res, next) => {
     });
   });
 };
+
+
 exports.getDetail = (req, res, next) => {
   const prodId = req.params.productId//productId is used as dynamic routing thats why here it is used (app.use("/products/:productId",getDetails))
   console.log({ prodId })// now i need "data" of this id so i will go inside model (data related things are handeled inthat like redux) and 
   // will implent logic inside class and then will call
   Product.fetchById(prodId, (product) => {
+    console.log("product inside controller")
     console.log(product)
-    res.render('shop/product-list', {
-      prods: product,
+    res.render('shop/product-detail', {
+      product: product[0],
       pageTitle: 'All Products',
       path: '/products'
     })
   })
-  //res.redirect("/")
+
 }
 exports.getIndex = (req, res, next) => {
   Product.fetchAll(products => {
