@@ -15,6 +15,8 @@ router.get("/products/:productId", shopController.getDetail)//product/anything w
 // get detail will be exicuted for products/anything, and "anything" can be grabbed using req.param.(dynamic url) here productId
 router.get('/cart', shopController.getCart);
 
+router.post('/cart', shopController.postCart)
+
 router.get('/orders', shopController.getOrders);
 
 router.get('/checkout', shopController.getCheckout);

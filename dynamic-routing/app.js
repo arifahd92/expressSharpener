@@ -1,5 +1,5 @@
 const path = require('path');
-
+const cart = require("./models/cart")
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -20,7 +20,7 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 app.use(errorController.get404);
-
 app.listen(3000, (err) => {
     console.log("listening dynamic-routing at port 3000")
+
 });
