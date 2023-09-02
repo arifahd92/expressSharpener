@@ -3,7 +3,8 @@ const cart = require("./models/cart")
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const db = require("./connection/database")
+//const db = require("./connection/database")
+const sequelize = require("./connection/databaseWithSequelize")
 const errorController = require('./controllers/error');
 
 const app = express();
@@ -22,7 +23,7 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-
+/*
 db.execute('SELECT * FROM products').then((result) => {
     //console.log(result)
     //result will be an array of two arrays firstone will be our data and second will be schema array 
@@ -32,7 +33,15 @@ db.execute('SELECT * FROM products').then((result) => {
 }).catch((err) => {
     console.log(err)
 })
-app.listen(3000, (err) => {
-    console.log("listening dynamic-routing at port 3000")
+*/
+//********************** */
 
-});
+sequelize.sync().then((result) => {//created schema in modal and sync with that
+    //console.log(result)//CREATE TABLE IF NOT EXISTS `products` 
+    app.listen(3000, (err) => {
+        console.log("listening dynamic-routing at port 3000")
+
+    });
+}).catch((err) => {
+    console.log(err)
+})

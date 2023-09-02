@@ -1,3 +1,9 @@
+
+
+//inside modal we declare a class with its properties and methods
+//in case of sequelize we just have to create class and schema methods are inbuilt
+
+/*
 const fs = require('fs');
 const path = require('path');
 
@@ -10,17 +16,17 @@ const p = path.join(
 // a function to read file, when it will be called it will be called with a callback and that call back will be called fron here
 const getProductsFromFile = cb => {
   fs.readFile(p, (err, fileContent) => {
-    if (err) {
+    if (err) {//file donot exist
       cb([]);
     } else {
       cb(JSON.parse(fileContent));
     }
   });
 };
-// a class to handle data 
+// **********************a class to handle data ***********************
 module.exports = class Product {
   constructor(title, imageUrl, description, price) {
-    // this.id = Math.random().toString()
+    // this.id = Math.random().toString()//fs module me required not in sql
     this.title = title;
     this.price = price;
     this.description = description;
@@ -38,38 +44,77 @@ module.exports = class Product {
   }
   */
 
-  //save method for for sql
-  save() {
-    console.log(this)
-    return db.execute('insert into products (title,price,description,imageUrl) values(?,?,?,?)',
-      [this.title, this.price, this.description, this.imageUrl])
+//save method for for sql
+/*
+save() {
+  console.log(this)
+  return db.execute('insert into products (title,price,description,imageUrl) values(?,?,?,?)',
+    [this.title, this.price, this.description, this.imageUrl])
+}
+*/
+
+/*
+  static fetchAll(cb) {
+    console.log("i m being exicuted")
+    getProductsFromFile(cb);
   }
+*/
+//using mysql
+/*
+static fetchAll() {
+  return db.execute('SELECT * FROM products')
+}
+*/
+/*
+static findById(productId, cb) {
+  getProductsFromFile((products) => {
+    const specific = products.filter((item) => item.id == productId)
+    //console.log(specific)
+    console.log("inside model")
 
-  /*
-    static fetchAll(cb) {
-      console.log("i m being exicuted")
-      getProductsFromFile(cb);
-    }
-  */
-  static fetchAll() {
-    return db.execute('SELECT * FROM products')
-  }
-  /*
-  static findById(productId, cb) {
-    getProductsFromFile((products) => {
-      const specific = products.filter((item) => item.id == productId)
-      //console.log(specific)
-      console.log("inside model")
+    cb(specific)
+  })
+}
+*/
+//using mysql
+/*
+static findById(prodId) {
 
-      cb(specific)
-    })
-  }
-  */
+  console.log("find by id method called")
+  return db.execute(`select * from products where id=${prodId}`)//returning a promise that contains data 
 
-  static findById(prodId) {
-
-    console.log("find by id method called")
-    return db.execute(`select * from products where id=${prodId}`)//returning a promise that contains data 
-
-  }
+}
 };
+*/
+
+
+
+//****************************8 */ going tto use Sequlize****************************************
+
+
+//define schema
+const Sequelize = require("sequelize")//class will be  returned by this,it will be used here for type 
+
+const sequelize = require("../connection/databaseWithSequelize")
+
+const Product = sequelize.define('product', {//product is table name it will be pluaralised
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  },
+  title: Sequelize.STRING,
+  price: {
+    type: Sequelize.DOUBLE,
+    allowNull: false
+  },
+  imageUrl: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }, description: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+});
+module.exports = Product

@@ -16,14 +16,20 @@ exports.postAddProduct = (req, res, next) => {
   const description = req.body.description;
   const product = new Product(title, imageUrl, description, price);//created instance to call save method inside save method this will work as this object
 
-
-  product.save().then((result) => {
-    console.log(result)
+  /*
+    product.save().then((result) => {
+      console.log(result)
+      res.redirect('/');
+    }).catch((err) => {
+      console.log(err)
+    });
+    */
+  // ******************sequelise*******************
+  Product.create({
+    title, price, imageUrl, description
+  }).then(() => {
     res.redirect('/');
-  }).catch((err) => {
-    console.log(err)
-  });
-
+  }).catch((err) => console.log(err))
 };
 
 exports.getEditProduct = (req, res, next) => {
@@ -46,13 +52,15 @@ exports.getEditProduct = (req, res, next) => {
     });
   })
 };
-
+//using sequelize
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll(products => {
+  Product.findAll().then((products) => {
+
     res.render('admin/products', {
       prods: products,
       pageTitle: 'Admin Products',
       path: '/admin/products'
     });
-  });
+  })
+
 };

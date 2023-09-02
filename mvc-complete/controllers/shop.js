@@ -16,6 +16,7 @@ exports.getProducts = (req, res, next) => {
   );
 };*/
 //from data base
+/*
 exports.getProducts = async (req, res, next) => {
   const promiseData = Product.fetchAll()//returning a promise
   const [products, info] = await promiseData
@@ -28,19 +29,38 @@ exports.getProducts = async (req, res, next) => {
   });
 
 }
+*/
+//**************************** */
+//with sequelize
+exports.getProducts = async (req, res, next) => {
+  Product.findAll().then((products) => {
+    // console.log(products[0].dataValues)
+    res.render('shop/product-list', {
+      prods: products,
+      pageTitle: 'All Products',
+      path: '/products'
+    });
+  })
+
+}
+
+
+//router.get("/products/:productId", shopController.getDetail)
 
 exports.getDetail = async (req, res, next) => {
   const prodId = req.params.productId//productId is used as dynamic routing thats why here it is used (app.use("/products/:productId",getDetails))
   console.log({ prodId })// now i need "data" of this id so i will go inside model (data related things are handeled inthat like redux) and 
   // will implent logic inside class and then will call
-  const promiseData = Product.findById(prodId)
-  const [product, info] = await promiseData
+  const promiseData = Product.findByPk(prodId)
+  const product = await promiseData
 
   res.render('shop/product-detail', {
-    product: product[0],
+    product: product,
     pageTitle: 'All Products',
     path: '/products'
   })
+
+  // *******************this was throu fs 
 
   /*prodId, (product) => {
   console.log("get setail is being exicuted")
@@ -56,10 +76,14 @@ exports.getDetail = async (req, res, next) => {
 
 }
 //router.get('/', shopController.getIndex);
+
+//************************************* using sql only */
+
+/*
 exports.getIndex = (req, res, next) => {
-  const promiseData = Product.fetchAll()
+  const promiseData = Product.findAll()
   promiseData.then((result) => {
-    console.log(result[0])
+    console.log(result)
     res.render('shop/index', {
       prods: result[0],
       pageTitle: 'Shop',
@@ -67,6 +91,25 @@ exports.getIndex = (req, res, next) => {
     });
   })
 };
+*/
+//******************************using sequalise */
+exports.getIndex = (req, res, next) => {
+  const promiseData = Product.findAll()
+  promiseData.then((result) => {
+    // console.log(result)
+    res.render('shop/index', {
+      prods: result,
+      pageTitle: 'Shop',
+      path: '/'
+    });
+  })
+}
+
+
+
+
+
+
 
 exports.getCart = (req, res, next) => {
   res.render('shop/cart', {
