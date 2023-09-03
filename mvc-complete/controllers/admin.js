@@ -25,7 +25,8 @@ exports.postAddProduct = (req, res, next) => {
     });
     */
   // ******************sequelise*******************
-  Product.create({
+  //  Product.create({
+  req.user.createProduct({//relational, kis user ne product create kiya
     title, price, imageUrl, description
   }).then(() => {
     res.redirect('/');
@@ -33,6 +34,7 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getEditProduct = (req, res, next) => {
+  console.log("getEdit get called")
   // /admin/edit-product/123?edit=true&info=arif,//we will get string tye true and if not set edit=true then undefined
   const editMode = req.query.edit
   console.log(req.query)//{edit:"true",info:"arif"}, in case of above commented route, 123 is used for dynamic(that msay be any thing)
@@ -42,7 +44,7 @@ exports.getEditProduct = (req, res, next) => {
     res.redirect("/")
     return
   }
-  Product.findById(req.params.productId, (product) => {
+  Product.findByPk(req.params.productId, (product) => {
     console.log(product[0].price)
     res.render('admin/edit-product', {//form is same for both add and edit 
       pageTitle: 'edit Product',

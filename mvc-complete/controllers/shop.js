@@ -33,7 +33,8 @@ exports.getProducts = async (req, res, next) => {
 //**************************** */
 //with sequelize
 exports.getProducts = async (req, res, next) => {
-  Product.findAll().then((products) => {
+  //Product.findAll().then((products) => {
+  req.user.getProducts().then((products) => {//replaced with user specific products
     // console.log(products[0].dataValues)
     res.render('shop/product-list', {
       prods: products,
@@ -93,8 +94,23 @@ exports.getIndex = (req, res, next) => {
 };
 */
 //******************************using sequalise */
+/*
 exports.getIndex = (req, res, next) => {
   const promiseData = Product.findAll()
+  promiseData.then((result) => {
+    // console.log(result)
+    res.render('shop/index', {
+      prods: result,
+      pageTitle: 'Shop',
+      path: '/'
+    });
+  })
+}
+*/
+//relational sequelize
+exports.getIndex = (req, res, next) => {
+  const promiseData = req.user.getProducts()//only those products that belongs to this user (findAll method  get replacedby getProducts and 
+  //create method replaced by createProduct  )
   promiseData.then((result) => {
     // console.log(result)
     res.render('shop/index', {
